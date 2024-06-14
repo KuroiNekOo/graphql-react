@@ -1,0 +1,14 @@
+type Mutation {
+
+  createUser(input: UserCreateInput!): User
+  createRole(input: RoleCreateInput!): Role
+  createUserHasRole(input: UserHasRoleInputCreate): UserHasRole
+
+  updateUser(input: UserUpdateInput!): User
+  updateRole(input: RoleUpdateInput!): Role
+
+  deleteUser(id: Int!): Boolean
+  deleteRole(id: Int!): Boolean
+  deleteUserHasRole(id: Int!): Boolean
+
+}

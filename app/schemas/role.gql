@@ -1,0 +1,14 @@
+type Role {
+  id: Int
+  name: String
+  roleHasUser: [RoleHasUser]
+}
+
+input RoleCreateInput {
+  name: String!
+}
+
+input RoleUpdateInput {
+  id: Int!
+  name: String
+}

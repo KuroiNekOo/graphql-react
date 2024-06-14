@@ -1,0 +1,8 @@
+type UserHasRole {
+  role: Role
+}
+
+input UserHasRoleInputCreate {
+  user_id: Int!
+  role_id: Int!
+}

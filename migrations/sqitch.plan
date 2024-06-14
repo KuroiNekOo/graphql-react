@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=ouser
+
+01_init 2024-06-14T20:41:23Z Etudiant O'clock <student@teleporter> # init
+02_crud_functions 2024-06-14T21:00:02Z Etudiant O'clock <student@teleporter> # ajout de l'API SQL (CRUD)

@@ -1,0 +1,3 @@
+type RoleHasUser {
+  user: User
+}

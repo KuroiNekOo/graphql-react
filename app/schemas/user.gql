@@ -1,0 +1,14 @@
+type User {
+  id: Int
+  pseudo: String
+  userHasRole: [UserHasRole]
+}
+
+input UserCreateInput {
+  pseudo: String!
+}
+
+input UserUpdateInput {
+  id: Int!
+  pseudo: String
+}
