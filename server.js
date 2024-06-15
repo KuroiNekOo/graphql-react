@@ -17,6 +17,11 @@ const knexConfig = {
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE || 'ouser',
   },
+  //* Pool par défaut sur PG { min: 2, max: 10 }
+  pool: {
+    min: 0,
+    max: 10,
+  },
 };
 
 const gqlServer = new ApolloServer({

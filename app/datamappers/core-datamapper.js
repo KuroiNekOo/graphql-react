@@ -10,10 +10,27 @@ class CoreDatamapper {
 
     this.pkLoader = this.client
       .from(this.tableName)
+      /**
+       * @params query - Requête courante venant de Knex
+       * @params ids - Tableau que le dataloader a rempli avec les ids envoyé par la méthode load()
+       * @params .load() - Méthode de l'objet retourné par .batch()
+       */
       .batch(async (query, ids) => {
 
+        //! Exemple
+        //* SI ids = [ 2, 3, 1 ]
+
+        //* La méthode query.whereIn() va faire une requête SQL
+        //* qui va implicitement trier les valeurs de retour
+        //* dans l'ordre des ids du plus petit au plus grand
+
+        //* reOrderRows va simplement retrier
+        //* les valeurs de retour en fonction des ids du tableau de base
+
+        //* Requête SQL
         const rows = await query.whereIn('id', ids);
 
+        //* Triage des résultats par les ids du tableau ids[]
         const reOrderRows = ids.map(
           (id) => rows.find((row) => row.id === id)
         );
