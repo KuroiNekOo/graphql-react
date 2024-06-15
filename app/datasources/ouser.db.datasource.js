@@ -6,6 +6,7 @@ import RoleHasUser from '../datamappers/role-has-user.js';
 
 export default class OuserDbDataSource extends BatchedSQLDataSource {
 
+  //* Relancé à chaque requête entrante
   constructor(config) {
 
     super(config);

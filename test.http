@@ -1,0 +1,98 @@
+@endpoint=http://localhost:{{$dotenv PORT}}
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query oneCity($id: Int!) {
+  city(id: $id) {
+    id
+    name
+    weather {
+      sky
+      precipitation
+      temperature
+    }
+  }
+}
+
+{
+  "id": 1
+}
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query getOneCookingStyle($id: Int!){
+  cookingStyle(id: $id) {
+    id
+    label
+  }
+}
+
+{
+  "id": 1
+}
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query restaurant($id: Int!){
+  restaurant(id: $id) {
+    id
+    name
+    restaurantHasCookingStyles{
+      cookingStyle {
+        label
+      }
+    }
+  }
+}
+
+{
+  "id": 1
+}
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+mutation updateRestaurant($id: Int!, $input: RestaurantUpdateInput!){
+  updateRestaurant(id: $id, input: $input) {
+    id
+    name
+  }
+}
+
+{
+  "id": 1,
+  "input": {
+    "name": "nouveau nom de restaurant"
+  }
+}
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+X-Request-Type: GraphQL
+
+query user($id: Int!) {
+  user(id: $id) {
+    id
+    pseudo
+    temperature
+  }
+}
+
+{
+  "id": 1
+}
+
+###
+GET http://api.weatherapi.com/v1/current.json?key={{$dotenv WEATHER_API_KEY}}&q=Paris

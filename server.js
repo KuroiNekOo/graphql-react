@@ -6,6 +6,7 @@ import typeDefs from './app/typedefs.js';
 import resolvers from './app/resolvers/index.js';
 
 import OuserDbDataSource from './app/datasources/ouser.db.datasource.js';
+import WeatherApiDataSource from './app/datasources/weather.api.datasource.js';
 
 const knexConfig = {
   client: 'pg',
@@ -24,10 +25,12 @@ const gqlServer = new ApolloServer({
 });
 
 const { url } = await startStandaloneServer(gqlServer, {
+  //* Le context() est relancé à chaque requête entrante
   context: () => {
     const { cache } = gqlServer;
     return {
       dataSources: {
+        weatherApi: new WeatherApiDataSource({ cache }),
         ouserDb: new OuserDbDataSource({ cache, knexConfig }),
       },
     }

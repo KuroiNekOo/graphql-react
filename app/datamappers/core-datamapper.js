@@ -5,6 +5,7 @@ class CoreDatamapper {
     this.client = client;
   }
 
+  //* Relancé à chaque requête entrante
   initLoader() {
 
     this.pkLoader = this.client
