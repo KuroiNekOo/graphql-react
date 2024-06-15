@@ -1,10 +1,8 @@
-import userHasRoleDatamapper from '../datamappers/user-has-role.js';
-
 export default {
 
-  async userHasRole({ id }) {
+  async userHasRole({ id }, _, { dataSources }) {
 
-    const rows = await userHasRoleDatamapper.findByUser(id);
+    const rows = await dataSources.ouserDb.userHasRoleDatamapper.findByUser(id);
     return rows;
 
   },

@@ -5,4 +5,4 @@ class User extends CoreDatamapper {
   tableName = 'user';
 }
 
-export default new User(client);
+export default User;

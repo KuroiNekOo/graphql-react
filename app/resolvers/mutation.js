@@ -1,65 +1,61 @@
-import userDatamapper from '../datamappers/user.js';
-import roleDatamapper from '../datamappers/role.js';
-import userHasRoleDatamapper from '../datamappers/user-has-role.js';
-
 export default {
 
-  async createUser(_, { input }) {
+  async createUser(_, { input }, { dataSources }) {
 
-    const row = await userDatamapper.create(input);
+    const row = await dataSources.ouserDb.userDatamapper.create(input);
     return row;
 
   },
 
-  async createRole(_, { input }) {
+  async createRole(_, { input }, { dataSources }) {
 
-    const row = await roleDatamapper.create(input);
+    const row = await dataSources.ouserDb.roleDatamapper.create(input);
     return row;
 
   },
 
-  async createUserHasRole(_, { input }) {
+  async createUserHasRole(_, { input }, { dataSources }) {
 
-    const row = await userHasRoleDatamapper.create(input);
+    const row = await dataSources.ouserDb.userHasRoleDatamapper.create(input);
     return row;
 
   },
 
-  async updateUser(_, { input }) {
+  async updateUser(_, { input }, { dataSources }) {
 
     const { id, ...inputData } = input;
-    
-    const row = await userDatamapper.update({ id }, inputData);
+
+    const row = await dataSources.ouserDb.userDatamapper.update({ id }, inputData);
     return row;
 
   },
 
-  async updateRole(_, { input }) {
+  async updateRole(_, { input }, { dataSources }) {
 
     const { id, ...inputData } = input;
-    
-    const row = await roleDatamapper.update({ id }, inputData);
+
+    const row = await dataSources.ouserDb.roleDatamapper.update({ id }, inputData);
     return row;
 
   },
 
-  async deleteUser(_, { id }) {
+  async deleteUser(_, { id }, { dataSources }) {
 
-    const result = await userDatamapper.delete(id);
+    const result = await dataSources.ouserDb.userDatamapper.delete(id);
     return result;
 
   },
 
-  async deleteRole(_, { id }) {
+  async deleteRole(_, { id }, { dataSources }) {
 
-    const result = await roleDatamapper.delete(id);
+    const result = await dataSources.ouserDb.roleDatamapper.delete(id);
     return result;
 
   },
 
-  async deleteUserHasRole(_, { id }) {
+  async deleteUserHasRole(_, { id }, { dataSources }) {
 
-    const result = await userHasRoleDatamapper.delete(id);
+    const result = await dataSources.ouserDb.userHasRoleDatamapper.delete(id);
     return result;
 
   },

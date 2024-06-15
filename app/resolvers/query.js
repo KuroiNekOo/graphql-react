@@ -1,32 +1,29 @@
-import userDatamapper from '../datamappers/user.js';
-import roleDatamapper from '../datamappers/role.js';
-
 export default {
 
-  async users() {
+  async users(_, __, { dataSources }) {
 
-    const rows = await userDatamapper.findAll();
+    const rows = await dataSources.ouserDb.userDatamapper.findAll();
     return rows;
 
   },
 
-  async user(_, { id }) {
+  async user(_, { id }, { dataSources }) {
 
-    const row = userDatamapper.findByPk(id);
+    const row = dataSources.ouserDb.userDatamapper.findByPk(id);
     return row;
 
   },
 
-  async roles() {
+  async roles(_, __, { dataSources }) {
 
-    const rows = await roleDatamapper.findAll();
+    const rows = await dataSources.ouserDb.roleDatamapper.findAll();
     return rows;
 
   },
 
-  async role(_, { id }) {
+  async role(_, { id }, { dataSources }) {
 
-    const row = roleDatamapper.findByPk(id);
+    const row = dataSources.ouserDb.roleDatamapper.findByPk(id);
     return row;
 
   },

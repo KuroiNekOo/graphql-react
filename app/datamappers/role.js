@@ -5,4 +5,4 @@ class Role extends CoreDatamapper {
   tableName = 'role';
 }
 
-export default new Role(client);
+export default Role;

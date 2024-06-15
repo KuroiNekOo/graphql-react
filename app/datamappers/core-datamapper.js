@@ -5,77 +5,56 @@ class CoreDatamapper {
     this.client = client;
   }
 
+  initLoader() {
+
+    this.pkLoader = this.client
+      .from(this.tableName)
+      .batch(async (query, ids) => {
+
+        const rows = await query.whereIn('id', ids);
+
+        const reOrderRows = ids.map(
+          (id) => rows.find((row) => row.id === id)
+        );
+
+        return reOrderRows;
+
+      });
+
+  }
+
   /**
-     * Récupération par identifiant
-     * @param {number|number[]} id identifiant ou liste d'identifiants
-     * @returns un enregistrement ou une liste d'enregistrement
-     */
+   * Récupération par identifiant
+   * @param {number|number[]} id identifiant ou liste d'identifiants
+   * @returns un enregistrement ou une liste d'enregistrement
+   */
   async findByPk(id) {
-    const preparedQuery = {
-      text: `SELECT * FROM "${this.tableName}" WHERE id = $1`,
-      values: [id],
-    };
 
-    const result = await this.client.query(preparedQuery);
+    //* Cache par défaut: 5 secondes
+    const row = await this.client.from(this.tableName).where({ id }).first().cache();
+    return row;
 
-    if (!result.rows[0]) {
-      return null;
-    }
-
-    return result.rows[0];
   }
 
   async findAll(params) {
-    let filter = '';
-    const values = [];
 
-    if (params?.where) {
-      const filters = [];
-      let indexPlaceholder = 1;
+    const query = this.client.from(this.tableName);
 
-      Object.entries(params.where).forEach(([param, value]) => {
-        if (param === '$or') {
-          const filtersOr = [];
-          Object.entries(value).forEach(([key, val]) => {
-            filtersOr.push(`"${key}" = $${indexPlaceholder}`);
-            values.push(val);
-            indexPlaceholder += 1;
-          });
-          filters.push(`(${filtersOr.join(' OR ')})`);
-        } else {
-          filters.push(`"${param}" = $${indexPlaceholder}`);
-          values.push(value);
-          indexPlaceholder += 1;
-        }
-      });
-      filter = `WHERE ${filters.join(' AND ')}`;
-    }
+    if (params?.where) query.where(where);
 
-    const preparedQuery = {
-      text: `
-                SELECT * FROM "${this.tableName}"
-                ${filter}
-            `,
-      values,
-    };
+    const rows = await query.cache();
 
-    const result = await this.client.query(preparedQuery);
+    return rows;
 
-    return result.rows;
   }
 
   async create(inputData) {
 
-    const preparedQuery = {
-      text: `
-              SELECT *
-              FROM insert_${this.tableName}
-              ($1)
-            `,
-      values: [inputData],
-    };
-
-    const { rows: [ row ] } = await this.client.query(preparedQuery);
+    const { rows: [row] } = await this.client.raw(`
+      SELECT *
+      FROM insert_${this.tableName}
+      (?)
+    `, [inputData]);
 
     return row;
 
@@ -83,16 +62,11 @@ class CoreDatamapper {
 
   async update({ id }, inputData) {
 
-    const preparedQuery = {
-      text: `
-              SELECT *
-              FROM update_${this.tableName}
-              ($1)
-            `,
-      values: [{ ...inputData, id }],
-    };
-
-    const { rows: [ row ] } = await this.client.query(preparedQuery);
+    const { rows: [row] } = await this.client.raw(`
+      SELECT *
+      FROM insert_${this.tableName}
+      (?)
+    `, [{ ...inputData, id }]);
 
     return row;
 
@@ -100,12 +74,8 @@ class CoreDatamapper {
 
   async delete(id) {
 
-    const result = await this.client.query({
-      text: `DELETE FROM "${this.tableName}" WHERE id = $1`,
-      values: [id],
-    });
-
-    return !!result.rowCount;
+    const affectedRows = await this.client.from(this.tableName).where({ id }).del();
+    return !!affectedRows;
 
   }
 }
